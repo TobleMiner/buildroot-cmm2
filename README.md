@@ -3,9 +3,6 @@ DOOM for the CMM2
 
 This repo contains DOOM for the CMM2.
 
-Unfortunately both the SPI and USB interface are broken within Linux, thus in addition to the usual
-microSD card a CF card is required, too.
-
 # Demo
 [![Video of DOOM on the CMM2](/assets/youtube.jpg)](https://www.youtube.com/watch?v=iAf6q5keE7U)
 
@@ -16,6 +13,9 @@ microSD card a CF card is required, too.
 * A [pata-gpio](https://github.com/Manawyrm/pata-gpio) adapter
 * A linux machine (WSL works, too but is slow)
 * The DOOM assets (DOOM.WAD)
+
+Unfortunately both the SPI and USB interface are broken within Linux, thus in addition to the usual
+microSD card a CF card is required, too.
 
 # Building  
 1. Clone this repository
