@@ -1,0 +1,61 @@
+From 1cc73d152eee3f443310ed43c3dd75643c6d0ef7 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Mon, 7 Sep 2020 15:55:09 +0200
+Subject: [PATCH] input: keyboard: Emulate enter press by pressing both
+ shoulder buttons
+
+---
+ drivers/input/keyboard/nunchuk.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/input/keyboard/nunchuk.c b/drivers/input/keyboard/nunchuk.c
+index cdbf51452b43..aed7befa9213 100644
+--- a/drivers/input/keyboard/nunchuk.c
++++ b/drivers/input/keyboard/nunchuk.c
+@@ -25,6 +25,7 @@ struct key_report {
+ 	bool right_pressed;
+ 	bool ctrl_pressed;
+ 	bool space_pressed;
++	bool enter_pressed;
+ };
+ 
+ struct nunchuk_device {
+@@ -100,6 +101,7 @@ static void nunchuk_do_keyboard(struct nunchuk_device *nunchuk) {
+ 	bool right_pressed = false;
+ 	bool ctrl_pressed = false;
+ 	bool space_pressed = false;
++	bool enter_pressed = false;
+ 
+ 	struct nunchuk_report *report = &nunchuk->report;
+ 	up_pressed = report->joy_y > 127 + DEADZONE;
+@@ -109,6 +111,11 @@ static void nunchuk_do_keyboard(struct nunchuk_device *nunchuk) {
+ 	ctrl_pressed = report->C;
+ 	space_pressed = report->Z;
+ 
++	if (ctrl_pressed && space_pressed) {
++		enter_pressed = true;
++		ctrl_pressed = space_pressed = false;
++	}
++
+ 	if (!inhibit) {
+ 		serio_update(nunchuk->serio, nunchuk->key_report.up_pressed, up_pressed, true, 0x75);
+ 		serio_update(nunchuk->serio, nunchuk->key_report.down_pressed, down_pressed, true, 0x72);
+@@ -116,6 +123,7 @@ static void nunchuk_do_keyboard(struct nunchuk_device *nunchuk) {
+ 		serio_update(nunchuk->serio, nunchuk->key_report.right_pressed, right_pressed, true, 0x74);
+ 		serio_update(nunchuk->serio, nunchuk->key_report.ctrl_pressed, ctrl_pressed, false, 0x14);
+ 		serio_update(nunchuk->serio, nunchuk->key_report.space_pressed, space_pressed, false, 0x29);
++		serio_update(nunchuk->serio, nunchuk->key_report.enter_pressed, enter_pressed, false, 0x5a);
+ 	}
+ 
+ 	nunchuk->key_report.up_pressed = up_pressed;
+@@ -124,6 +132,7 @@ static void nunchuk_do_keyboard(struct nunchuk_device *nunchuk) {
+ 	nunchuk->key_report.right_pressed = right_pressed;
+ 	nunchuk->key_report.ctrl_pressed = ctrl_pressed;
+ 	nunchuk->key_report.space_pressed = space_pressed;
++	nunchuk->key_report.enter_pressed = enter_pressed;
+ }
+ 
+ static void workqueue_function(struct work_struct *work)
+-- 
+2.28.0
+
