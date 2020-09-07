@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_CMM2TBSPACE_PATH/package/fbdoom/Config.in"

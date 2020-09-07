@@ -1,0 +1,7 @@
+
+echo "Waiting for MMC device..."
+sleep 1
+mmc dev ${devnum}
+setenv bootargs root=/dev/sda2 rw rootwait clk_ignore_unused
+load ${devtype} ${devnum}:${distro_bootpart} 0xd1000000 boot/Image.fit
+bootm 0xd1000000

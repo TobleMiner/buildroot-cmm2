@@ -1,0 +1,25 @@
+From d5c626b2192c9c63148b9b35a50ad8bfb2488595 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Sun, 23 Aug 2020 00:07:55 +0200
+Subject: [PATCH 05/11] Make stalls a dbg event
+
+---
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4c643dfc7fbb..b80f8f2c012c 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -924,7 +924,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 	}
+ 
+ 	if (sr & STM32H7_SPI_SR_SUSP) {
+-		dev_warn(spi->dev, "Communication suspended\n");
++		dev_dbg(spi->dev, "Communication suspended\n");
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+ 			stm32h7_spi_read_rxfifo(spi, false);
+ 		/*
+-- 
+2.28.0
+

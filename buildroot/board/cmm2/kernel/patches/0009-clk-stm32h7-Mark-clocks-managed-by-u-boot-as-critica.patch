@@ -1,0 +1,40 @@
+From 8b0b7b770b4ba68173c351444b63db1892ba14bf Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Mon, 7 Sep 2020 11:45:48 +0200
+Subject: [PATCH 09/11] clk: stm32h7: Mark clocks managed by u-boot as critical
+
+---
+ drivers/clk/clk-stm32h7.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/clk/clk-stm32h7.c b/drivers/clk/clk-stm32h7.c
+index 0ea7261d15e0..d6fa570963c6 100644
+--- a/drivers/clk/clk-stm32h7.c
++++ b/drivers/clk/clk-stm32h7.c
+@@ -659,8 +659,8 @@ static const struct st32h7_pll_cfg stm32h7_pll3 = {
+ 
+ static const struct stm32_pll_data stm32_pll[] = {
+ 	{ "vco1", "pllsrc", CLK_IGNORE_UNUSED, &stm32h7_pll1 },
+-	{ "vco2", "pllsrc", 0, &stm32h7_pll2 },
+-	{ "vco3", "pllsrc", 0, &stm32h7_pll3 },
++	{ "vco2", "pllsrc", CLK_IGNORE_UNUSED, &stm32h7_pll2 },
++	{ "vco3", "pllsrc", CLK_IGNORE_UNUSED | CLK_IS_CRITICAL, &stm32h7_pll3 },
+ };
+ 
+ struct stm32_fractional_divider {
+@@ -968,9 +968,9 @@ static const struct composite_clk_cfg stm32_odf[3][3] = {
+ 		M_ODF("pll2_r", "vco2", RCC_PLLCFGR, 21, RCC_PLL2DIVR, 24, 7),
+ 	},
+ 	{
+-		M_ODF("pll3_p", "vco3", RCC_PLLCFGR, 22, RCC_PLL3DIVR,  9, 7),
+-		M_ODF("pll3_q", "vco3", RCC_PLLCFGR, 23, RCC_PLL3DIVR, 16, 7),
+-		M_ODF("pll3_r", "vco3", RCC_PLLCFGR, 24, RCC_PLL3DIVR, 24, 7),
++		M_ODF_F("pll3_p", "vco3", RCC_PLLCFGR, 22, RCC_PLL3DIVR,  9, 7, CLK_IGNORE_UNUSED | CLK_IS_CRITICAL),
++		M_ODF_F("pll3_q", "vco3", RCC_PLLCFGR, 23, RCC_PLL3DIVR, 16, 7, CLK_IGNORE_UNUSED | CLK_IS_CRITICAL),
++		M_ODF_F("pll3_r", "vco3", RCC_PLLCFGR, 24, RCC_PLL3DIVR, 24, 7, CLK_IGNORE_UNUSED | CLK_IS_CRITICAL),
+ 	}
+ };
+ 
+-- 
+2.28.0
+

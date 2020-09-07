@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fbdoom -mb 3 -iwad /DOOM.WAD

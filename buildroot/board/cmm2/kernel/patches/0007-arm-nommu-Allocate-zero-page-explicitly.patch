@@ -1,0 +1,60 @@
+From 717c29040d1367cde828a4c67abed9b39a4fa3b7 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Mon, 7 Sep 2020 11:43:47 +0200
+Subject: [PATCH 07/11] arm: nommu: Allocate zero page explicitly
+
+---
+ arch/arm/include/asm/pgtable-nommu.h |  3 ++-
+ arch/arm/mm/nommu.c                  | 12 ++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/include/asm/pgtable-nommu.h b/arch/arm/include/asm/pgtable-nommu.h
+index d16aba48fa0a..baa474ca3b21 100644
+--- a/arch/arm/include/asm/pgtable-nommu.h
++++ b/arch/arm/include/asm/pgtable-nommu.h
+@@ -48,7 +48,8 @@ typedef pte_t *pte_addr_t;
+  * ZERO_PAGE is a global shared page that is always zero: used
+  * for zero-mapped memory areas etc..
+  */
+-#define ZERO_PAGE(vaddr)	(virt_to_page(0))
++extern struct page *empty_zero_page;
++#define ZERO_PAGE(vaddr)	(empty_zero_page)
+ 
+ /*
+  * Mark the prot value as uncacheable and unbufferable.
+diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
+index 8b3d7191e2b8..affcc49c8dea 100644
+--- a/arch/arm/mm/nommu.c
++++ b/arch/arm/mm/nommu.c
+@@ -26,6 +26,9 @@
+ 
+ unsigned long vectors_base;
+ 
++struct page *empty_zero_page;
++EXPORT_SYMBOL(empty_zero_page);
++
+ #ifdef CONFIG_ARM_MPU
+ struct mpu_rgn_info mpu_rgn_info;
+ #endif
+@@ -148,9 +151,18 @@ void __init adjust_lowmem_bounds(void)
+  */
+ void __init paging_init(const struct machine_desc *mdesc)
+ {
++	void *zero_page;
++
+ 	early_trap_init((void *)vectors_base);
+ 	mpu_setup();
++
++	/* allocate the zero page. */
++	zero_page = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
++	memset(zero_page, 0, PAGE_SIZE);
++
+ 	bootmem_init();
++
++	empty_zero_page = virt_to_page(zero_page);
+ }
+ 
+ /*
+-- 
+2.28.0
+

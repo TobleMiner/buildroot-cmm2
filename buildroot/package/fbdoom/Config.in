@@ -1,0 +1,12 @@
+config BR2_PACKAGE_FBDOOM
+	bool "fbdoom"
+	help
+	  fbdoom is a Linux port of DOOM with fb output support
+
+config BR2_PACKAGE_FBDOOM_AUTOSTART
+	bool "autostart fbdoom"
+	depends on BR2_PACKAGE_FBDOOM
+	default y
+	help
+	  spawns an fbdoom instance on tty1 at startup
+	  

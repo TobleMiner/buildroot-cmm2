@@ -1,0 +1,13 @@
+diff --git a/arch/arm/boot/dts/stm32h743-pinctrl.dtsi b/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
+index e44e7baa3..e3a5c537f 100644
+--- a/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
++++ b/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
+@@ -44,7 +44,7 @@
+ 
+ / {
+ 	soc {
+-		pin-controller {
++		pinctrl: pin-controller {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			compatible = "st,stm32h743-pinctrl";

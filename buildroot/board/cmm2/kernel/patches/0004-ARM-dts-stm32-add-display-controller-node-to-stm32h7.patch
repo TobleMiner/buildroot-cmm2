@@ -1,0 +1,38 @@
+From b681326815b19234232c178d1ce31e21395f0154 Mon Sep 17 00:00:00 2001
+From: Tobias Schramm <t.schramm@manjaro.org>
+Date: Sat, 15 Aug 2020 00:41:19 +0200
+Subject: [PATCH 04/11] ARM: dts: stm32: add display controller node to
+ stm32h743
+
+The stm32h743 has a display controller. This commit adds it to the
+device tree.
+
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+---
+ arch/arm/boot/dts/stm32h743.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm/boot/dts/stm32h743.dtsi b/arch/arm/boot/dts/stm32h743.dtsi
+index 7c612db9efcf..7febe19e780d 100644
+--- a/arch/arm/boot/dts/stm32h743.dtsi
++++ b/arch/arm/boot/dts/stm32h743.dtsi
+@@ -334,6 +334,16 @@ usbotg_fs: usb@40080000 {
+ 			status = "disabled";
+ 		};
+ 
++		ltdc: display-controller@50001000 {
++			compatible = "st,stm32-ltdc";
++			reg = <0x50001000 0x200>;
++			interrupts = <88>, <89>;
++			resets = <&rcc STM32H7_APB3_RESET(LTDC)>;
++			clocks = <&rcc LTDC_CK>;
++			clock-names = "lcd";
++			status = "disabled";
++		};
++
+ 		mdma1: dma-controller@52000000 {
+ 			compatible = "st,stm32h7-mdma";
+ 			reg = <0x52000000 0x1000>;
+-- 
+2.28.0
+
