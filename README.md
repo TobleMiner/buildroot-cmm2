@@ -1,7 +1,7 @@
 DOOM for the CMM2
 =================
 
-This repo contains Doom for the CMM2.
+This repo contains DOOM for the CMM2.
 
 Unfortunately both the SPI and USB interface are broken within Linux, thus in addition to the usual
 microSD card a CF card is required, too.
@@ -47,3 +47,16 @@ second partition on the CF card.
 # Running
 Plug both the microSD card and CF card into the CMM2. Connect VGA and the Nunchuk. Power on the CMM2. After
 about a minute the system should start loading doom. Loading all assets might take a few additional minutes.
+
+# How to play
+The Nunchuk emulates a keyboard.
+The Nunchuk to keyboard mappings and the keys functions in DOOM are as follows:
+
+| Nunchuk  | Keyboard   | DOOM     |
+|----------|------------|----------|
+| Joystick | Arrow keys | Movement |
+| C        | ctrl       | Fire     |
+| Z        | space      | Interact |
+| C+Z      | enter      | Confirm  |
+
+Currently there is now way to swap weapons.
