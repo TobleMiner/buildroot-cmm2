@@ -44,11 +44,11 @@ to both the microSD and CF card.
 Additionally you will need to obtain the `DOOM.WAD` file containing all game assets. Copy it to the root of the
 second partition on the CF card.
 
-# Running
+# Playing
 Plug both the microSD card and CF card into the CMM2. Connect VGA and the Nunchuk. Power on the CMM2. After
 about a minute the system should start loading doom. Loading all assets might take a few additional minutes.
 
-# How to play
+## How to play
 The Nunchuk emulates a keyboard.
 The Nunchuk to keyboard mappings and the keys functions in DOOM are as follows:
 
