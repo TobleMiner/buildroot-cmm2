@@ -12,6 +12,7 @@ required, too.
 # Prerequisits  
 * A CMM2 with 32MiB of SDRAM
 * A Wii Nunchuk
+* A USB A to A cable
 * A [pata-gpio](https://github.com/Manawyrm/pata-gpio) adapter
 * A linux machine (WSL works, too but is slow)
 * The DOOM assets (DOOM.WAD)
@@ -25,8 +26,20 @@ required, too.
 5. Build the system image running `make all`
 
 # Installation
-Once the build finished the file `output/images/sdcard.img` contains the system image. `dd` those images
+
+## Bootloader
+To support booting Linux u-boot needs to be flashed to the internal flash of the STM32H7 on the CMM2.  
+This can be done via the DFU USB bootloader present in the STM. To activate the DFU bootrom, place the
+`Boot select` jumper on the rightmost two pins and press the reset button. Now use the USB A to A cable
+to connect the USB A port on the CMM2 to one of your computers USB A ports.
+Next flash the bootloader with dfu-util:  
+`dfu-util --dfuse-address 0x08000000 -a 0 -D output/images/u-boot.bin`
+
+## Linux
+Once the build finished the file `output/images/sdcard.img` contains the system image. `dd` this image
 to both the microSD and CF card.
+
+## DOOM assets
 Additionally you will need to obtain the `DOOM.WAD` file containing all game assets. Copy it to the root of the
 second partition on the CF card.
 
